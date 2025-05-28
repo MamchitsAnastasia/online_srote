@@ -1,12 +1,14 @@
-import pytest
 import os
+from typing import Any, Callable
+
+import pytest
 
 from src.json_importer import load_data_from_json
 from src.models.category import Category
 from src.models.product import Product
 
 
-def test_load_valid_data(temp_json_file):
+def test_load_valid_data(temp_json_file: Callable[[list[dict[str, Any]]], str]) -> None:
     """Тест функции load_data_from_json для загрузки корректных данных"""
     test_data = [
         {
@@ -34,7 +36,7 @@ def test_load_valid_data(temp_json_file):
     assert categories[0].products[0].name == "Товар 1"
 
 
-def test_load_empty_products(temp_json_file):
+def test_load_empty_products(temp_json_file: Callable[[list[dict[str, Any]]], str]) -> None:
     """Тест функции load_data_from_json для загрузки категории без товаров"""
     test_data = [{"name": "Пустая категория", "description": "", "products": []}]
 
@@ -45,7 +47,7 @@ def test_load_empty_products(temp_json_file):
     assert len(categories[0].products) == 0
 
 
-def test_missing_fields(temp_json_file):
+def test_missing_fields(temp_json_file: Callable[[list[dict[str, Any]]], str]) -> None:
     """Тест функции load_data_from_json для обработки отсутствующих полей"""
     test_data = [
         {
@@ -63,7 +65,7 @@ def test_missing_fields(temp_json_file):
     assert product.price == 0.0  # Проверка значения по умолчанию
 
 
-def test_invalid_data_types(temp_json_file):
+def test_invalid_data_types(temp_json_file: Callable[[list[dict[str, Any]]], str]) -> None:
     """Тест функции load_data_from_json для обработки неверных типов данных"""
     test_data = [
         {
@@ -87,17 +89,15 @@ def test_invalid_data_types(temp_json_file):
     assert categories[0].products[0].name == "Товар 2"
 
 
-def test_file_not_found():
+def test_file_not_found() -> None:
     """Тест функции load_data_from_json для обработки отсутствующего файла"""
     with pytest.raises(ValueError, match="не найден"):
         load_data_from_json("nonexistent_file.json")
 
 
-def test_invalid_json(temp_json_file):
+def test_invalid_json(temp_json_file: Callable[[list[dict[str, Any]]], str]) -> None:
     """Тест функции load_data_from_json для обработки некорректного JSON"""
-    file_path = os.path.join(
-        temp_json_file.__closure__[0].cell_contents, "invalid.json"
-    )
+    file_path = os.path.join(temp_json_file.__closure__[0].cell_contents, "invalid.json")  # type: ignore
     with open(file_path, "w", encoding="utf-8") as f:
         f.write("{invalid json}")
 

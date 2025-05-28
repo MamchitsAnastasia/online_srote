@@ -37,9 +37,7 @@ def load_data_from_json(file_path: str) -> list[Category]:
             except (ValueError, TypeError):
                 continue
 
-        category = Category(
-            name=category_name, description=category_description, products=products
-        )
+        category = Category(name=category_name, description=category_description, products=products)
         categories.append(category)
 
     return categories

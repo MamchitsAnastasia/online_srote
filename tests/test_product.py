@@ -1,4 +1,7 @@
-def test_product_initialization(product_example1):
+from src.models.product import Product
+
+
+def test_product_initialization(product_example1: Product) -> None:
     """
     Тест класса Product,
     проверяет корректность записи при инициализации экземпляра класса

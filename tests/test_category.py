@@ -2,7 +2,9 @@ from src.models.category import Category
 from src.models.product import Product
 
 
-def test_category_initialization(category_example, product_example1, product_example2):
+def test_category_initialization(
+    category_example: Category, product_example1: Product, product_example2: Product
+) -> None:
     """
     Тест класса Category,
     проверяет корректность записи при инициализации экземпляра класса
@@ -14,14 +16,14 @@ def test_category_initialization(category_example, product_example1, product_exa
     assert product_example2 in category_example.products
 
 
-def test_category_for_category_count(category_example):
+def test_category_for_category_count(category_example: Category) -> None:
     """Тест класса Category на подсчет количества категорий"""
     assert Category.category_count == 1
     Category("Новая категория", "Пустая категория", [])
     assert Category.category_count == 2
 
 
-def test_category_for_product_count(category_example):
+def test_category_for_product_count(category_example: Category) -> None:
     """Тест класса Category на подсчет количества уникальных товаров"""
     assert Category.product_count == 2
     new_product = Product("Планшет3310", "Планшет такой себе, конечно", 800.0, 3)
