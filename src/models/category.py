@@ -10,10 +10,10 @@ class Category:
         description (str): Описание категории товаров
         products (list[Product]): Список товаров категории
     """
+
     # Атрибуты класса
     category_count = 0  # Общее количество категорий
     product_count = 0  # Общее количество уникальных товаров
-
 
     def __init__(self, name: str, description: str, products: list[Product]):
         """
