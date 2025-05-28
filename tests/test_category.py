@@ -24,6 +24,6 @@ def test_category_for_category_count(category_example):
 def test_category_for_product_count(category_example):
     """Тест класса Category на подсчет количества уникальных товаров"""
     assert Category.product_count == 2
-    new_product = Product("Планшет3310", 'Планшет такой себе, конечно"', 800.0, 3)
+    new_product = Product("Планшет3310", "Планшет такой себе, конечно", 800.0, 3)
     Category("Другая новая категория", "А это не пустая категория", [new_product])
     assert Category.product_count == 3

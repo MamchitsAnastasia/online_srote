@@ -1,3 +1,6 @@
+import json
+import os
+
 import pytest
 
 from src.models.category import Category
@@ -26,3 +29,16 @@ def category_example(product_example1, product_example2):
         "Гаджеты со странным описанием",
         [product_example1, product_example2],
     )
+
+
+@pytest.fixture
+def temp_json_file(tmp_path):
+    """Фикстура для временного JSON файла"""
+
+    def make_temp_file(content):
+        file_path = os.path.join(tmp_path, "test_data.json")
+        with open(file_path, "w", encoding="utf-8") as f:
+            json.dump(content, f)
+        return file_path
+
+    return make_temp_file
