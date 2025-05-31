@@ -1,3 +1,4 @@
+from src.models.category_iterator import CategoryIterator
 from src.models.product import Product
 
 
@@ -41,6 +42,12 @@ class Category:
         total_quantity = sum(product.quantity for product in self.__products)
         return f"{self.name}, количество продуктов: {total_quantity} шт."
 
+    def __iter__(self):
+        """
+        Функция возвращает итератор для товаров категории.
+        """
+        return CategoryIterator(self)
+
     def add_product(self, product: Product) -> None:
         """
         Функция добавляет товар в категорию.
@@ -60,3 +67,8 @@ class Category:
         Название продукта, XXX руб. Остаток: YYY шт.
         """
         return "\n".join(str(product) for product in self.__products)
+
+    @property
+    def products_list(self) -> list[Product]:
+        """Геттер для получения списка продуктов (для итератора)"""
+        return self.__products
