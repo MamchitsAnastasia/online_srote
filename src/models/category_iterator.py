@@ -1,4 +1,8 @@
-from src.models.category import Category
+from typing import TYPE_CHECKING, Any, Iterator
+
+if TYPE_CHECKING:
+    from src.models.category import Category  # Импорт только для проверки типов
+
 from src.models.product import Product
 
 
@@ -7,7 +11,7 @@ class CategoryIterator:
     Класс-итератор для перебора товаров в категории.
     """
 
-    def __init__(self, category: Category):
+    def __init__(self, category: "Category"):  # type: ignore
         """
         Функция для инициализации экземпляра класса-итератора.
 
@@ -17,13 +21,13 @@ class CategoryIterator:
         self.category = category
         self.index = 0
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[Product]:
         """
         Функция возвращает сам объект итератора.
         """
         return self
 
-    def __next__(self) -> Product:
+    def __next__(self) -> Any:
         """
         Функция возвращает следующий товар в категории, пока товары не закончились.
         """
