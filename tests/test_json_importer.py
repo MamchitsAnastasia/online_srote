@@ -5,7 +5,6 @@ import pytest
 
 from src.json_importer import load_data_from_json
 from src.models.category import Category
-from src.models.product import Product
 
 
 def test_load_valid_data(temp_json_file: Callable[[list[dict[str, Any]]], str]) -> None:
@@ -31,9 +30,9 @@ def test_load_valid_data(temp_json_file: Callable[[list[dict[str, Any]]], str]) 
     assert len(categories) == 1
     assert isinstance(categories[0], Category)
     assert categories[0].name == "Тестовая категория"
-    assert len(categories[0].products) == 1
-    assert isinstance(categories[0].products[0], Product)
-    assert categories[0].products[0].name == "Товар 1"
+    assert "Товар 1" in categories[0].products
+    assert "100.0 руб." in categories[0].products
+    assert "Остаток: 10 шт." in categories[0].products
 
 
 def test_load_empty_products(temp_json_file: Callable[[list[dict[str, Any]]], str]) -> None:
@@ -60,9 +59,9 @@ def test_missing_fields(temp_json_file: Callable[[list[dict[str, Any]]], str]) -
     categories = load_data_from_json(file_path)
 
     assert categories[0].description == ""  # Проверка значения по умолчанию
-    product = categories[0].products[0]
-    assert product.description == ""  # Проверка значения по умолчанию
-    assert product.price == 0.0  # Проверка значения по умолчанию
+    assert "Товар без цены" in categories[0].products
+    assert "Остаток: 5 шт." in categories[0].products
+    assert "0.0 руб." in categories[0].products
 
 
 def test_invalid_data_types(temp_json_file: Callable[[list[dict[str, Any]]], str]) -> None:
@@ -85,8 +84,10 @@ def test_invalid_data_types(temp_json_file: Callable[[list[dict[str, Any]]], str
     categories = load_data_from_json(file_path)
 
     # Проверяем, что только один товар был загружен (второй с корректными данными)
-    assert len(categories[0].products) == 1
-    assert categories[0].products[0].name == "Товар 2"
+    assert "Товар 1" not in categories[0].products
+    assert "Товар 2" in categories[0].products
+    assert "200.0 руб." in categories[0].products
+    assert "Остаток: 3 шт." in categories[0].products
 
 
 def test_file_not_found() -> None:
