@@ -27,6 +27,25 @@ class Product:
         self.__price = price
         self.quantity = quantity
 
+    def __str__(self) -> str:
+        """
+        Функция для строкового представления продукта в формате:
+        Название продукта, XXX руб. Остаток: YYY шт.
+        """
+        return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
+
+    def __add__(self, other: "Product") -> float:
+        """
+        Магический метод для сложения продуктов.
+        Возвращает сумму общей стоимости двух продуктов.
+
+        Параметры:
+            other: Другой объект Product для сложения
+        """
+        if not isinstance(other, Product):
+            raise TypeError("Можно складывать только объекты класса Product")
+        return self.price * self.quantity + other.price * other.quantity
+
     @property
     def price(self) -> float:
         """
