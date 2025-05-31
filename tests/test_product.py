@@ -1,4 +1,4 @@
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 import pytest
 
@@ -43,7 +43,7 @@ def test_price_setter_positive(product_example1: Product) -> None:
     assert product_example1.price == 600.0
 
 
-def test_price_setter_negative_value(product_example1: Product, capsys) -> None:
+def test_price_setter_negative_value(product_example1: Product, capsys: pytest.CaptureFixture[str]) -> None:
     """
     Тест класса Product,
     проверяет реакцию на попытку установить отрицательную цену
@@ -54,7 +54,7 @@ def test_price_setter_negative_value(product_example1: Product, capsys) -> None:
     assert product_example1.price == 500.3  # Цена не изменилась
 
 
-def test_price_setter_zero_value(product_example1: Product, capsys) -> None:
+def test_price_setter_zero_value(product_example1: Product, capsys: pytest.CaptureFixture[str]) -> None:
     """
     Тест класса Product,
     проверяет реакцию на попытку установить нулевую цену
@@ -66,7 +66,9 @@ def test_price_setter_zero_value(product_example1: Product, capsys) -> None:
 
 
 @patch("builtins.input", return_value="y")
-def test_price_reduction_confirmation_yes(mock_input, product_example1: Product, capsys) -> None:
+def test_price_reduction_confirmation_yes(
+    mock_input: MagicMock, product_example1: Product, capsys: pytest.CaptureFixture[str]
+) -> None:
     """
     Тест класса Product,
     проверяет подтверждение понижения цены (пользователь согласен)
@@ -78,7 +80,9 @@ def test_price_reduction_confirmation_yes(mock_input, product_example1: Product,
 
 
 @patch("builtins.input", return_value="n")
-def test_price_reduction_confirmation_no(mock_input, product_example1: Product, capsys) -> None:
+def test_price_reduction_confirmation_no(
+    mock_input: MagicMock, product_example1: Product, capsys: pytest.CaptureFixture[str]
+) -> None:
     """
     Тест класса Product,
     проверяет отмену понижения цены (пользователь не согласен)
@@ -89,7 +93,7 @@ def test_price_reduction_confirmation_no(mock_input, product_example1: Product, 
     assert product_example1.price == 500.3  # Цена не изменилась
 
 
-def test_price_increase_no_confirmation(product_example1: Product, capsys) -> None:
+def test_price_increase_no_confirmation(product_example1: Product, capsys: pytest.CaptureFixture[str]) -> None:
     """
     Тест класса Product,
     проверяет, что при повышении цены подтверждение не запрашивается
@@ -99,6 +103,7 @@ def test_price_increase_no_confirmation(product_example1: Product, capsys) -> No
     assert "Вы действительно хотите понизить цену" not in captured.out
     assert "Цена успешно изменена на 600.0" in captured.out
     assert product_example1.price == 600.0
+
 
 def test_new_product_creation() -> None:
     """Тест класса Product на создание нового товара без дубликатов"""

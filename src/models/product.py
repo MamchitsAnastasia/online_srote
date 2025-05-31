@@ -1,3 +1,6 @@
+from typing import Optional
+
+
 class Product:
     """
     Класс для представления товара в магазине.
@@ -55,7 +58,7 @@ class Product:
 
     @classmethod
     def new_product(
-        cls, product_data: dict, existing_products: list["Product"] = None
+        cls, product_data: dict, existing_products: Optional[list["Product"]] = None
     ) -> "Product":  # Отложенное определение класса
         """
         Класс-метод для создания нового товара из словаря.

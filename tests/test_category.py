@@ -14,8 +14,8 @@ def test_category_initialization(
     assert category_example.name == "Электроника"
     assert category_example.description == "Гаджеты со странным описанием"
     assert len(category_example.products.split("\n")) == 2  # Разбиваю строку на список
-    assert 'Телефон3000' in category_example.products
-    assert 'Ноутбук66' in category_example.products
+    assert "Телефон3000" in category_example.products
+    assert "Ноутбук66" in category_example.products
 
 
 def test_category_for_category_count(category_example: Category) -> None:

@@ -5,7 +5,6 @@ import pytest
 
 from src.json_importer import load_data_from_json
 from src.models.category import Category
-from src.models.product import Product
 
 
 def test_load_valid_data(temp_json_file: Callable[[list[dict[str, Any]]], str]) -> None:
@@ -34,6 +33,7 @@ def test_load_valid_data(temp_json_file: Callable[[list[dict[str, Any]]], str]) 
     assert "Товар 1" in categories[0].products
     assert "100.0 руб." in categories[0].products
     assert "Остаток: 10 шт." in categories[0].products
+
 
 def test_load_empty_products(temp_json_file: Callable[[list[dict[str, Any]]], str]) -> None:
     """Тест функции load_data_from_json для загрузки категории без товаров"""
