@@ -157,3 +157,23 @@ def test_new_product_invalid_quantity() -> None:
     }
     with pytest.raises(ValueError, match="Количество не может быть отрицательным"):
         Product.new_product(product_data)
+
+def test_product_addition() -> None:
+    """Тест класса Product на сложение двух продуктов (метод add)"""
+    product1 = Product("Товар 1", "Описание 1", 100.0, 10)
+    product2 = Product("Товар 2", "Описание 2", 200.0, 2)
+    total = product1 + product2
+    assert total == 1400.0  # 100*10 + 200*2
+
+def test_product_addition_with_different_types() -> None:
+    """Тест класса Product при попытке сложения продукта с объектом другого типа"""
+    product = Product("Товар", "Описание", 100.0, 5)
+    with pytest.raises(TypeError, match="Можно складывать только объекты класса Product"):
+        result = product + 100  # type: ignore
+
+def test_product_addition_with_zero_quantity() -> None:
+    """Тест сложения продуктов с нулевым количеством"""
+    product1 = Product("Товар 1", "Описание 1", 100.0, 0)
+    product2 = Product("Товар 2", "Описание 2", 200.0, 5)
+    assert product1 + product2 == 1000.0  # 100*0 + 200*5
+
