@@ -1,3 +1,5 @@
+from typing import Iterator
+
 from src.models.category_iterator import CategoryIterator
 from src.models.product import Product
 
@@ -42,7 +44,7 @@ class Category:
         total_quantity = sum(product.quantity for product in self.__products)
         return f"{self.name}, количество продуктов: {total_quantity} шт."
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[Product]:
         """
         Функция возвращает итератор для товаров категории.
         """
