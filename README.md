@@ -11,16 +11,17 @@
 **Coverage report:** 100%
 
 **Версия:** coverage.py v7.8.2  
-**Дата отчёта:** 2025-05-31 07:30 +0700
+**Дата отчёта:** 2025-05-31 18:08 +0700
 
 | Файл                      | Statements | Missing | Excluded | Coverage |
 |---------------------------|------------|---------|----------|----------|
 | src\\_\_init\_\_.py       | 0          | 0       | 0 | 100%     |
 | src\json_importer.py      | 25         | 0       | 0 | 100%     |
 | src\models\_\_init\_\_.py | 0          | 0       | 0 | 100%     |
-| src\models\category.py    | 19         | 0       | 0 | 100%     |
-| src\models\product.py     | 41         | 0       | 0 | 100%     |
-| **Total**                 | **85**     | **0**   | **0**    | **100%** |
+| src\models\category_iterator.py    | 17         | 1       | 0 | 94%      |
+| src\models\category.py    | 26         | 2       | 0 | 92%      |
+| src\models\product.py     | 48         | 0       | 0 | 100%     |
+| **Total**                 | **116**    | **3**   | **0**    | **97%**  |
 
 ## Структура проекта
 
@@ -32,6 +33,7 @@ pythonproject/
 ├── htmlcov/                      # Отчёты coverage
 ├── src/                          # Исходный код
 │   ├── models/                   # Функции для инициализации классов
+│   │   ├── category_iterator.py  # Инициализация класса-итератора
 │   │   ├── category.py           # Инициализация класса Сategory
 │   │   └── product.py            # Инициализация класса Product
 │   └── json_importer.py          # Функция для мпорта данных из json-файла
@@ -56,6 +58,7 @@ pythonproject/
 - Автоматическая проверка данных при создании
 - Подтверждение понижения цены
 - Класс-метод для создания товара из словаря с обработкой дубликатов
+- Возможность складывать продукты по их общей стоимости
 
 2. **Класс Category**  
 Представляет категорию товаров с функционалом:
@@ -70,7 +73,11 @@ pythonproject/
   - Добавление товара (add_product)
   - Геттер для форматированного вывода информации о товарах
 
-3. **Импорт данных**:  
+3. **Класс CategoryIterator**:  
+Добавляет итерацию по категориям для класса Category
+
+
+4. **Импорт данных**:  
 Функционал загрузки данных:
 - Загрузка категорий и товаров из JSON файла
 - Обработка ошибок:
@@ -84,22 +91,20 @@ pythonproject/
 ```python
 # Загрузка данных из JSON
 categories = load_data_from_json("data/products.json")
+for category in categories:
+    print(category)
+    for product in category:
+        print(f"  - {product}")
 
 # Создание товара
-product_data = {
-    "name": "Новый товар",
-    "description": "Описание",
-    "price": 100.0,
-    "quantity": 5
-}
-new_product = Product.new_product(product_data)
+tv = Product("Телевизор", "4K OLED", 899.99, 5)
+phone = Product("Смартфон", "Android 13", 499.99, 10)
 
-# Добавление товара в категорию
-category = categories[0]
-category.add_product(new_product)
+# Создание категории
+electronics = Category("Электроника", "Техника для дома", [tv, phone])
 
-# Вывод информации о товарах в категории
-print(category.products)
+# Вывод информации
+print(f"Общая стоимость: {tv + phone} руб.")
 ```
 
 ## Тестирование
