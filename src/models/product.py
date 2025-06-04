@@ -44,6 +44,10 @@ class Product:
         """
         if not isinstance(other, Product):
             raise TypeError("Можно складывать только объекты класса Product")
+
+        if type(self) != type(other):  # Проверка на одинаковый класс
+            raise TypeError("Нельзя складывать товары разных классов")
+
         return self.price * self.quantity + other.price * other.quantity
 
     @property
