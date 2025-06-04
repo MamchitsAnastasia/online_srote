@@ -57,6 +57,9 @@ class Category:
         Параметры:
             product: Объект класса Product для добавления
         """
+        if not isinstance(product, Product):
+            raise TypeError("Можно добавлять только объекты класса Product или его наследников")
+
         self.__products.append(product)
         # Увеличиваю счетчик товаров
         # Счётчик для товаров, добавленных через метод
