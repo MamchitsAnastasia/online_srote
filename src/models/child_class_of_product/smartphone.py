@@ -32,4 +32,5 @@ class Smartphone(Product):
         """
         Переопределение строкового представления для Smartphone.
         """
-        return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт. (Модель: {self.model}, Память: {self.memory}GB)"
+        return (f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт. "
+                f"(Модель: {self.model}, Память: {self.memory}GB)")
