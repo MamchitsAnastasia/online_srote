@@ -1,6 +1,8 @@
 import pytest
 
 from src.models.category import Category
+from src.models.child_class_of_product.lawn_grass import LawnGrass
+from src.models.child_class_of_product.smartphone import Smartphone
 from src.models.product import Product
 
 
@@ -76,3 +78,35 @@ def test_empty_category() -> None:
     empty_category = Category("Пустая", "Нет товаров", [])
     assert empty_category.products == ""
     assert len(empty_category.products.split("\n")) == 1  # Пустая строка дает один элемент при split
+
+
+def test_add_product_only_allowed_types(category_example: Category) -> None:
+    """
+    Тест класса Category,
+    проверяет, что add_product принимает только Product и его наследников
+    """
+    # Допустимые типы
+    valid_products = [
+        Product("Продукт", "Описание", 100, 1),
+        Smartphone("Смартфон", "Описание", 1000, 1, 95.0, "X", 128, "Black"),
+        LawnGrass("Трава", "Описание", 50, 1, "Россия", "14 дней", "Green"),
+    ]
+
+    for product in valid_products:
+        initial_count = len(category_example.products_list)
+        category_example.add_product(product)
+        assert len(category_example.products_list) == initial_count + 1
+
+
+def test_add_product_rejects_invalid_types(category_example: Category) -> None:
+    """
+    Тест класса Category,
+    проверяет, что add_product отвергает посторонние объекты
+    """
+    invalid_objects = ["Не продукт", 123, {"name": "Чайник"}, None, [], True]
+
+    for obj in invalid_objects:
+        initial_count = len(category_example.products_list)
+        with pytest.raises(TypeError, match="Можно добавлять только объекты класса Product или его наследников"):
+            category_example.add_product(obj)  # type: ignore
+        assert len(category_example.products_list) == initial_count
