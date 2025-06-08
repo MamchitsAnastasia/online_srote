@@ -8,42 +8,48 @@
 
 **Статус разработки:** в разработке.
 
-**Coverage report:** 100%
+**Coverage report:** 96%
 
 **Версия:** coverage.py v7.8.2  
 **Дата отчёта:** 2025-05-31 18:08 +0700
 
 | Файл                      | Statements | Missing | Excluded | Coverage |
 |---------------------------|------------|---------|----------|----------|
-| src\\_\_init\_\_.py       | 0          | 0       | 0 | 100%     |
-| src\json_importer.py      | 25         | 0       | 0 | 100%     |
-| src\models\_\_init\_\_.py | 0          | 0       | 0 | 100%     |
-| src\models\category_iterator.py    | 17         | 1       | 0 | 94%      |
-| src\models\category.py    | 26         | 2       | 0 | 92%      |
-| src\models\product.py     | 48         | 0       | 0 | 100%     |
-| **Total**                 | **116**    | **3**   | **0**    | **97%**  |
+| `src/__init__.py`                         | 0          | 0       | 0        | 100%     |
+| `src/json_importer.py`                    | 25         | 0       | 0        | 100%     |
+| `src/models/__init__.py`                  | 0          | 0       | 0        | 100%     |
+| `src/models/category_iterator.py`         | 17         | 1       | 0        | 94%      |
+| `src/models/category.py`                  | 28         | 2       | 0        | 93%      |
+| `src/models/child_class_of_product/__init__.py` | 0       | 0       | 0        | 100%     |
+| `src/models/child_class_of_product/lawn_grass.py` | 9      | 1       | 0        | 89%      |
+| `src/models/child_class_of_product/smartphone.py` | 10     | 1       | 0        | 90%      |
+| `src/models/product.py`                   | 50         | 0       | 0        | 100%     |
+| **Total**                                 | **139**    | **5**   | **0**    | **96%**  |
 
 ## Структура проекта
 
 ```
 pythonproject/
-├── .venv/                        # Виртуальное окружение
-├── data/                         # Данные
-│   └── products.json             # Пример файла JSON
-├── htmlcov/                      # Отчёты coverage
-├── src/                          # Исходный код
-│   ├── models/                   # Функции для инициализации классов
-│   │   ├── category_iterator.py  # Инициализация класса-итератора
-│   │   ├── category.py           # Инициализация класса Сategory
-│   │   └── product.py            # Инициализация класса Product
-│   └── json_importer.py          # Функция для мпорта данных из json-файла
-├── tests/                        # Тесты для вышеописанных модулей
-├── .flake8                       # Конфигурация линтера
-├── .gitignore                    # Игнорируемые файлы
-├── main.py                       # Точка входа
-├── poetry.lock                   # Зависимости Poetry
-├── pyproject.toml                # Конфигурация Poetry
-└── README.md                     # Документация
+├── .venv/                          # Виртуальное окружение
+├── data/                           # Данные
+│   └── products.json               # Пример файла JSON
+├── htmlcov/                        # Отчёты coverage
+├── src/                            # Исходный код
+│   ├── models/                     # Функции для инициализации классов
+│   │   ├── child_class_of_product  # Дирректория для наследников класса Product
+│   │   │   ├── lawn_grass.py       # Наследник класса Product - газонная трава
+│   │   │   └── smartphone.py       # Наследник класса Product - смартфон
+│   │   ├── category_iterator.py    # Инициализация класса-итератора 
+│   │   ├── category.py             # Инициализация класса Сategory
+│   │   └── product.py              # Инициализация класса Product
+│   └── json_importer.py            # Функция для мпорта данных из json-файла
+├── tests/                          # Тесты для вышеописанных модулей
+├── .flake8                         # Конфигурация линтера
+├── .gitignore                      # Игнорируемые файлы
+├── main.py                         # Точка входа
+├── poetry.lock                     # Зависимости Poetry
+├── pyproject.toml                  # Конфигурация Poetry
+└── README.md                       # Документация
 ```
 
 ## Основной функционал
@@ -60,6 +66,18 @@ pythonproject/
 - Класс-метод для создания товара из словаря с обработкой дубликатов
 - Возможность складывать продукты по их общей стоимости
 
+  1.1 ***Подкласс Smartphone***  
+Наследует от Product и добавляет специфичные атрибуты:
+- Производительность (efficiency) — числовой показатель (например, 95.5)
+- Модель (model) — название модели (например, "Galaxy S23")
+- Объём памяти (memory) — встроенная память в GB (например, 256)
+- Цвет (color) — цвет устройства  
+  1.2 ***Подкласс LawnGrass***  
+Наследует от Product и добавляет атрибуты для газонной травы:  
+- Страна-производитель (country) — например, "Россия"
+- Срок прорастания (germination_period) — например, "14 дней"
+- Цвет (color) — цвет травы
+
 2. **Класс Category**  
 Представляет категорию товаров с функционалом:
 - Хранение атрибутов:
@@ -70,7 +88,7 @@ pythonproject/
   - Количества категорий (category_count)
   - Количества уникальных товаров (product_count)
 - Методы:
-  - Добавление товара (add_product)
+  - Добавление товара (add_product) с проверкой типа через isinstance()
   - Геттер для форматированного вывода информации о товарах
 
 3. **Класс CategoryIterator**:  
