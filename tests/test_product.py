@@ -2,6 +2,8 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
+from src.models.child_class_of_product.lawn_grass import LawnGrass
+from src.models.child_class_of_product.smartphone import Smartphone
 from src.models.product import Product
 
 
@@ -175,7 +177,44 @@ def test_product_addition_with_different_types() -> None:
 
 
 def test_product_addition_with_zero_quantity() -> None:
-    """Тест сложения продуктов с нулевым количеством"""
+    """Тест класса Product на сложение продуктов с нулевым количеством"""
     product1 = Product("Товар 1", "Описание 1", 100.0, 0)
     product2 = Product("Товар 2", "Описание 2", 200.0, 5)
     assert product1 + product2 == 1000.0  # 100*0 + 200*5
+
+
+def test_add_only_same_class_products() -> None:
+    """Тест класса Product при попытке сложения только товаров одного класса"""
+    phone1 = Smartphone("Phone1", "Desc", 1000, 2, 95.0, "A", 128, "Black")
+    phone2 = Smartphone("Phone2", "Desc", 2000, 3, 98.0, "B", 256, "White")
+    grass1 = LawnGrass("Grass1", "Desc", 50, 10, "Россия", "14 дней", "Green")
+    grass2 = LawnGrass("Grass2", "Desc", 70, 5, "Беларусь", "10 дней", "Blue")
+
+    # Корректное сложение
+    assert phone1 + phone2 == 1000 * 2 + 2000 * 3
+    assert grass1 + grass2 == 50 * 10 + 70 * 5
+
+    # Некорректное сложение
+    with pytest.raises(TypeError, match="Нельзя складывать товары разных классов"):
+        phone1 + grass1
+
+    with pytest.raises(TypeError, match="Нельзя складывать товары разных классов"):
+        grass2 + phone2
+
+
+def test_add_inherited_class_products() -> None:
+    """Тест класса Product на сложение наследников Product между собой"""
+    base_product1 = Product("Товар1", "Описание", 100, 2)
+    base_product2 = Product("Товар2", "Описание", 200, 3)
+    phone = Smartphone("Phone", "Desc", 1000, 1, 95.0, "X", 128, "Black")
+    grass = LawnGrass("Grass", "Desc", 50, 1, "Россия", "14 дней", "Green")
+
+    # Базовые продукты можно складывать
+    assert base_product1 + base_product2 == 100 * 2 + 200 * 3
+
+    # Наследники не складываются с базовым классом
+    with pytest.raises(TypeError):
+        base_product1 + phone
+
+    with pytest.raises(TypeError):
+        grass + base_product2
