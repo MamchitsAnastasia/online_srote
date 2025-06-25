@@ -1,7 +1,9 @@
 from typing import Optional
 
+from src.models.base_product import BaseProduct
 
-class Product:
+
+class Product(BaseProduct):
     """
     Класс для представления товара в магазине.
 
@@ -70,7 +72,7 @@ class Product:
             print("Цена не должна быть нулевая или отрицательная")
             return
         if new_price < self.__price:
-            # Запрашиваем подтверждение на понижение цены
+            # Запрашиваю подтверждение на понижение цены
             confirmation = input(f"Вы действительно хотите понизить цену с {self.__price} до {new_price}? (y/n): ")
             if confirmation.lower() != "y":
                 print("Изменение цены отменено")
