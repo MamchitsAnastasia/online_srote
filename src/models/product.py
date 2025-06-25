@@ -1,9 +1,10 @@
 from typing import Optional
 
+from src.mixins.repr_mixin import ReprMixin
 from src.models.base_product import BaseProduct
 
 
-class Product(BaseProduct):
+class Product(ReprMixin, BaseProduct):
     """
     Класс для представления товара в магазине.
 
@@ -24,6 +25,7 @@ class Product(BaseProduct):
             price: Цена товара
             quantity: Количество товара в наличии
         """
+        super().__init__(name=name, description=description, price=price, quantity=quantity)
         self.name = name
         self.description = description
         self.__price = price
