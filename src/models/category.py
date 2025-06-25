@@ -1,10 +1,11 @@
 from typing import Iterator
 
+from src.models.base_item import BaseItem
 from src.models.category_iterator import CategoryIterator
 from src.models.product import Product
 
 
-class Category:
+class Category(BaseItem):
     """
     Класс для представления категории товаров в магазине.
 
