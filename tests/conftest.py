@@ -5,6 +5,7 @@ from typing import Any, Callable
 import pytest
 
 from src.models.category import Category
+from src.models.order import Order
 from src.models.product import Product
 
 
@@ -18,6 +19,11 @@ def product_example1() -> Product:
 def product_example2() -> Product:
     """Фикстура для второго примера продукта"""
     return Product("Ноутбук66", "Мощный ноутбук ну ваще", 1200.5, 5)
+
+@pytest.fixture
+def order_example(product_example1: Product) -> Order:
+    """Фикстура для примера заказа."""
+    return Order(product_example1, 1)
 
 
 @pytest.fixture
