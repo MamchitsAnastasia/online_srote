@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import List, Union
-
+from typing import List
 
 
 class BaseItem(ABC):
@@ -10,8 +9,8 @@ class BaseItem(ABC):
     """
 
     @abstractmethod
-    def __init__(self):
-        self._items: List['Order | Product'] = []
+    def __init__(self) -> None:
+        self._items: List["Order | Product"] = []
 
     @property
     @abstractmethod

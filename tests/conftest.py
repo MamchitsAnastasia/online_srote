@@ -20,6 +20,7 @@ def product_example2() -> Product:
     """Фикстура для второго примера продукта"""
     return Product("Ноутбук66", "Мощный ноутбук ну ваще", 1200.5, 5)
 
+
 @pytest.fixture
 def order_example(product_example1: Product) -> Order:
     """Фикстура для примера заказа."""

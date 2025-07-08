@@ -1,7 +1,10 @@
+from typing import Any
+
+
 class ReprMixin:
     """Миксин для вывода информации о создании объекта."""
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         """
         Инициализация миксина. Выводит информацию о создании объекта.
         """

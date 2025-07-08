@@ -1,6 +1,7 @@
+from typing import List, Optional
+
 import pytest
-from unittest.mock import MagicMock
-from typing import Optional, List
+
 from src.models.base_product import BaseProduct
 
 
@@ -32,9 +33,7 @@ class MockProduct(BaseProduct):
         self._price = new_price
 
     @classmethod
-    def new_product(
-        cls, product_data: dict, existing_products: Optional[List["BaseProduct"]] = None
-    ) -> "MockProduct":
+    def new_product(cls, product_data: dict, existing_products: Optional[List["BaseProduct"]] = None) -> "MockProduct":
         if existing_products is None:
             existing_products = []
 
@@ -56,7 +55,7 @@ class MockProduct(BaseProduct):
         return cls(name, description, price, quantity)
 
 
-def test_base_product_initialization():
+def test_base_product_initialization() -> None:
     """Тест инициализации mock-продукта."""
     product = MockProduct("Телефон", "Смартфон", 500.0, 10)
     assert product.name == "Телефон"
@@ -65,47 +64,47 @@ def test_base_product_initialization():
     assert product.quantity == 10
 
 
-def test_base_product_str():
+def test_base_product_str() -> None:
     """Тест строкового представления."""
     product = MockProduct("Телефон", "Смартфон", 500.0, 10)
     assert str(product) == "Телефон, 500.0 руб. Остаток: 10 шт."
 
 
-def test_base_product_addition():
+def test_base_product_addition() -> None:
     """Тест сложения продуктов."""
     product1 = MockProduct("Телефон", "Смартфон", 500.0, 2)
     product2 = MockProduct("Ноутбук", "Игровой", 1000.0, 1)
     assert product1 + product2 == 500.0 * 2 + 1000.0 * 1
 
 
-def test_base_product_addition_invalid_type():
+def test_base_product_addition_invalid_type() -> None:
     """Тест сложения с неверным типом."""
     product = MockProduct("Телефон", "Смартфон", 500.0, 2)
     with pytest.raises(TypeError, match="Можно складывать только объекты MockProduct"):
         product + 100  # type: ignore
 
 
-def test_base_product_price_getter():
+def test_base_product_price_getter() -> None:
     """Тест геттера цены."""
     product = MockProduct("Телефон", "Смартфон", 500.0, 10)
     assert product.price == 500.0
 
 
-def test_base_product_price_setter_valid():
+def test_base_product_price_setter_valid() -> None:
     """Тест сеттера цены с корректным значением."""
     product = MockProduct("Телефон", "Смартфон", 500.0, 10)
     product.price = 600.0
     assert product.price == 600.0
 
 
-def test_base_product_price_setter_invalid():
+def test_base_product_price_setter_invalid() -> None:
     """Тест сеттера цены с некорректным значением."""
     product = MockProduct("Телефон", "Смартфон", 500.0, 10)
     with pytest.raises(ValueError, match="Цена должна быть положительной"):
         product.price = -100.0
 
 
-def test_base_product_new_product():
+def test_base_product_new_product() -> None:
     """Тест создания нового продукта через new_product."""
     product_data = {
         "name": "Телефон",
@@ -120,7 +119,7 @@ def test_base_product_new_product():
     assert product.quantity == 10
 
 
-def test_base_product_new_product_with_existing():
+def test_base_product_new_product_with_existing() -> None:
     """Тест создания нового продукта с проверкой дубликатов."""
     existing_product = MockProduct("Телефон", "Старое описание", 400.0, 5)
     product_data = {

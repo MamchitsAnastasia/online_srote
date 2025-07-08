@@ -29,5 +29,7 @@ class LawnGrass(Product):
         """
         Переопределение строкового представления для LawnGrass.
         """
-        return (f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт. "
-                f"(Страна: {self.country}, Срок прорастания: {self.germination_period})")
+        return (
+            f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт. "
+            f"(Страна: {self.country}, Срок прорастания: {self.germination_period})"
+        )
