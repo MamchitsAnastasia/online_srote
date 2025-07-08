@@ -78,3 +78,8 @@ class Category(BaseItem):
     def products_list(self) -> list[Product]:
         """Геттер для получения списка продуктов (для итератора)"""
         return self.__products
+
+    @property
+    def total_cost(self) -> float:
+        """Общая стоимость всех товаров в категории."""
+        return sum(product.price * product.quantity for product in self.__products)

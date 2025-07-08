@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import List, Union
-from src.models.product import Product
-from src.models.order import Order
+
 
 
 class BaseItem(ABC):
@@ -12,7 +11,7 @@ class BaseItem(ABC):
 
     @abstractmethod
     def __init__(self):
-        self._items: List[Union[Product, Order]] = []
+        self._items: List['Order | Product'] = []
 
     @property
     @abstractmethod
@@ -27,4 +26,4 @@ class BaseItem(ABC):
 
     def __str__(self) -> str:
         """Строковое представление"""
-        return f"{self.__class__.__name__} ({self.items_count} items, total: {self.total_cost} руб.)"
+        return f"{self.__class__.__name__} ({self.items_count} items, total: {float(self.total_cost)} руб.)"
