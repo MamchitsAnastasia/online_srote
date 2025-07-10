@@ -1,10 +1,11 @@
 from typing import Iterator
 
+from src.models.base_item import BaseItem
 from src.models.category_iterator import CategoryIterator
 from src.models.product import Product
 
 
-class Category:
+class Category(BaseItem):
     """
     Класс для представления категории товаров в магазине.
 
@@ -77,3 +78,8 @@ class Category:
     def products_list(self) -> list[Product]:
         """Геттер для получения списка продуктов (для итератора)"""
         return self.__products
+
+    @property
+    def total_cost(self) -> float:
+        """Общая стоимость всех товаров в категории."""
+        return sum(product.price * product.quantity for product in self.__products)

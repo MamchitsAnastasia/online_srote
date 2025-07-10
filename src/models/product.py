@@ -1,7 +1,10 @@
 from typing import Optional
 
+from src.mixins.repr_mixin import ReprMixin
+from src.models.base_product import BaseProduct
 
-class Product:
+
+class Product(ReprMixin, BaseProduct):
     """
     Класс для представления товара в магазине.
 
@@ -22,6 +25,7 @@ class Product:
             price: Цена товара
             quantity: Количество товара в наличии
         """
+        super().__init__(name=name, description=description, price=price, quantity=quantity)
         self.name = name
         self.description = description
         self.__price = price
@@ -70,7 +74,7 @@ class Product:
             print("Цена не должна быть нулевая или отрицательная")
             return
         if new_price < self.__price:
-            # Запрашиваем подтверждение на понижение цены
+            # Запрашиваю подтверждение на понижение цены
             confirmation = input(f"Вы действительно хотите понизить цену с {self.__price} до {new_price}? (y/n): ")
             if confirmation.lower() != "y":
                 print("Изменение цены отменено")

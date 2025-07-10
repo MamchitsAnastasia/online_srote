@@ -1,0 +1,20 @@
+from typing import Any
+
+
+class ReprMixin:
+    """Миксин для вывода информации о создании объекта."""
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        """
+        Инициализация миксина. Выводит информацию о создании объекта.
+        """
+        print(f"Создан объект класса {self.__class__.__name__} с параметрами:")
+        print(f"Позиционные аргументы: {args}")
+        print(f"Именованные аргументы: {kwargs}")
+        super().__init__(*args, **kwargs)
+
+    def __repr__(self) -> str:
+        """
+        Возвращает строковое представление объекта для отладки.
+        """
+        return f"{self.__class__.__name__}({vars(self)})"
