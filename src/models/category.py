@@ -66,6 +66,16 @@ class Category(BaseItem):
         # Счётчик для товаров, добавленных через метод
         Category.product_count += 1
 
+    def middle_price(self) -> float:
+        """
+        Функция для подсчёта средней цены товаров в категории.
+        Возвращает 0, если в категории нет товаров.
+        """
+        try:
+            return self.total_cost / sum(product.quantity for product in self.__products)
+        except ZeroDivisionError:
+            return 0.0
+
     @property
     def products(self) -> str:
         """
