@@ -2,6 +2,7 @@ from typing import Optional
 
 from src.mixins.repr_mixin import ReprMixin
 from src.models.base_product import BaseProduct
+from src.models.zero_quantity_error import ZeroQuantityError
 
 
 class Product(ReprMixin, BaseProduct):
@@ -25,14 +26,18 @@ class Product(ReprMixin, BaseProduct):
             price: Цена товара
             quantity: Количество товара в наличии
         """
-        if quantity == 0:
-            raise ValueError("Товар с нулевым количеством не может быть добавлен")
+        try:
+            if quantity == 0:
+                raise ZeroQuantityError()
 
-        super().__init__(name=name, description=description, price=price, quantity=quantity)
-        self.name = name
-        self.description = description
-        self.__price = price
-        self.quantity = quantity
+            super().__init__(name=name, description=description, price=price, quantity=quantity)
+            self.name = name
+            self.description = description
+            self.__price = price
+            self.quantity = quantity
+            print("Товар успешно добавлен")
+        finally:
+            print("Обработка добавления товара завершена")
 
     def __str__(self) -> str:
         """

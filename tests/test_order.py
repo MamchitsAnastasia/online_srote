@@ -2,6 +2,7 @@ import pytest
 
 from src.models.order import Order
 from src.models.product import Product
+from src.models.zero_quantity_error import ZeroQuantityError
 
 
 def test_order_initialization(product_example1: Product) -> None:
@@ -14,13 +15,13 @@ def test_order_initialization(product_example1: Product) -> None:
 
 def test_order_invalid_quantity_zero(product_example1: Product) -> None:
     """Тест инициализации заказа с нулевым количеством."""
-    with pytest.raises(ValueError, match="Количество товара должно быть положительным"):
+    with pytest.raises(ZeroQuantityError):
         Order(product_example1, 0)
 
 
 def test_order_invalid_quantity_negative(product_example1: Product) -> None:
     """Тест инициализации заказа с отрицательным количеством."""
-    with pytest.raises(ValueError, match="Количество товара должно быть положительным"):
+    with pytest.raises(ZeroQuantityError):
         Order(product_example1, -1)
 
 

@@ -176,13 +176,6 @@ def test_product_addition_with_different_types() -> None:
         product + 100  # type: ignore
 
 
-def test_product_addition_with_zero_quantity() -> None:
-    """Тест класса Product на сложение продуктов с нулевым количеством"""
-    product1 = Product("Товар 1", "Описание 1", 100.0, 0)
-    product2 = Product("Товар 2", "Описание 2", 200.0, 5)
-    assert product1 + product2 == 1000.0  # 100*0 + 200*5
-
-
 def test_add_only_same_class_products() -> None:
     """Тест класса Product при попытке сложения только товаров одного класса"""
     phone1 = Smartphone("Phone1", "Desc", 1000, 2, 95.0, "A", 128, "Black")

@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import List
 
+from src.models.zero_quantity_error import ZeroQuantityError
+
 
 class BaseItem(ABC):
     """
@@ -8,9 +10,13 @@ class BaseItem(ABC):
     Объединяет общую функциональность для Заказов и Категорий.
     """
 
-    @abstractmethod
     def __init__(self) -> None:
         self._items: List["Order | Product"] = []
+
+    def validate_quantity(self, quantity: int) -> None:
+        """Проверяет, что количество товара больше нуля"""
+        if quantity <= 0:
+            raise ZeroQuantityError("Количество товара должно быть положительным")
 
     @property
     @abstractmethod
