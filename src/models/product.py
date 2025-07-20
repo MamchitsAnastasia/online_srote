@@ -25,6 +25,9 @@ class Product(ReprMixin, BaseProduct):
             price: Цена товара
             quantity: Количество товара в наличии
         """
+        if quantity == 0:
+            raise ValueError("Товар с нулевым количеством не может быть добавлен")
+
         super().__init__(name=name, description=description, price=price, quantity=quantity)
         self.name = name
         self.description = description
