@@ -31,9 +31,7 @@ class Category(BaseItem):
         super().__init__()
         self.name = name
         self.description = description
-        for product in products:
-            self.validate_quantity(product.quantity)
-            self._items.append(product)
+        self._items = products
 
         # Увеличиваю счетчик категорий при создании нового объекта
         Category.category_count += 1
@@ -82,7 +80,9 @@ class Category(BaseItem):
         Возвращает 0, если в категории нет товаров.
         """
         try:
-            return self.total_cost / sum(product.quantity for product in self._items)
+            total_cost = sum(p.price * p.quantity for p in self._items)
+            total_quantity = sum(p.quantity for p in self._items)
+            return total_cost / total_quantity if total_quantity != 0 else 0.0
         except ZeroDivisionError:
             return 0.0
 

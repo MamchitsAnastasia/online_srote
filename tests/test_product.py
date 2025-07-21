@@ -5,6 +5,7 @@ import pytest
 from src.models.child_class_of_product.lawn_grass import LawnGrass
 from src.models.child_class_of_product.smartphone import Smartphone
 from src.models.product import Product
+from src.models.zero_quantity_error import ZeroQuantityError
 
 
 def test_product_initialization(product_example1: Product) -> None:
@@ -16,6 +17,17 @@ def test_product_initialization(product_example1: Product) -> None:
     assert product_example1.description == "Смартфон хороший жесть"
     assert product_example1.price == 500.3
     assert product_example1.quantity == 10
+
+
+def test_product_creation_with_zero_quantity():
+    """
+    Тест класса Product,
+    проверяет создание товара с quantity = 0
+    """
+    with pytest.raises(ZeroQuantityError) as exc_info:
+        Product("Телефон", "Смартфон", 10000, 0)
+    assert str(exc_info.value) == "Товар с нулевым количеством не может быть добавлен"
+
 
 
 def test_product_private_price_attribute(product_example1: Product) -> None:
