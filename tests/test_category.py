@@ -4,7 +4,6 @@ from src.models.category import Category
 from src.models.child_class_of_product.lawn_grass import LawnGrass
 from src.models.child_class_of_product.smartphone import Smartphone
 from src.models.product import Product
-from src.models.zero_quantity_error import ZeroQuantityError
 
 
 def test_category_initialization(
@@ -93,7 +92,7 @@ def test_add_product_only_allowed_types(category_example: Category) -> None:
     valid_products = [
         Product("Продукт", "Описание", 100, 1),
         Smartphone("Смартфон", "Описание", 1000, 1, 95.0, "X", 128, "Black"),
-        LawnGrass("Трава", "Описание", 50, 1, "Россия", "14 дней", "Green")
+        LawnGrass("Трава", "Описание", 50, 1, "Россия", "14 дней", "Green"),
     ]
 
     for product in valid_products:
@@ -115,16 +114,18 @@ def test_add_product_rejects_invalid_types(category_example: Category) -> None:
             category_example.add_product(obj)  # type: ignore
         assert category_example.items_count == initial_count
 
-def test_middle_price_with_products(category_example):
+
+def test_middle_price_with_products(category_example) -> None:
     """
     Тест класса Category,
     проверяет расчет средней цены при наличии товаров
     """
     # category_example содержит товары за 500.3 и 1200.5
-    expected = (500.3*10 + 1200.5*5) / (10 + 5)
+    expected = (500.3 * 10 + 1200.5 * 5) / (10 + 5)
     assert category_example.middle_price() == pytest.approx(expected)
 
-def test_middle_price_empty_category():
+
+def test_middle_price_empty_category() -> None:
     """
     Тест класса Category,
     проверяет возврат 0 для пустой категории
@@ -132,15 +133,16 @@ def test_middle_price_empty_category():
     empty_category = Category("Пустая", "Нет товаров", [])
     assert empty_category.middle_price() == 0.0
 
-def test_middle_price_zero_quantity():
+
+def test_middle_price_zero_quantity() -> None:
     """
     Тест класса Category,
     проверяет обработку товаров с quantity=0
     """
     p1 = Product("Товар1", "Описание", 1000, 1)
     p2 = Product("Товар2", "Описание", 2000, 2)
-    p1.quantity -= 1 #quantity != 0 изначально - его раскупили
-    p2.quantity -= 2 #quantity != 0 изначально - его раскупили
+    p1.quantity -= 1  # quantity != 0 изначально - его раскупили
+    p2.quantity -= 2  # quantity != 0 изначально - его раскупили
 
     category = Category("Тест", "Категория", [p1, p2])
 

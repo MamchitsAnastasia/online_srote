@@ -73,7 +73,6 @@ class Category(BaseItem):
         finally:
             print("Обработка добавления товара в категорию завершена")
 
-
     def middle_price(self) -> float:
         """
         Функция для подсчёта средней цены товаров в категории.
