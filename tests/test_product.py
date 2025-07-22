@@ -18,6 +18,16 @@ def test_product_initialization(product_example1: Product) -> None:
     assert product_example1.quantity == 10
 
 
+def test_product_creation_with_zero_quantity() -> None:
+    """
+    Тест класса Product,
+    проверяет создание товара с quantity = 0
+    """
+    with pytest.raises(ValueError) as exc_info:
+        Product("Телефон", "Смартфон", 10000, 0)
+    assert str(exc_info.value) == "Товар с нулевым количеством не может быть добавлен"
+
+
 def test_product_private_price_attribute(product_example1: Product) -> None:
     """
     Тест класса Product,
@@ -174,13 +184,6 @@ def test_product_addition_with_different_types() -> None:
     product = Product("Товар", "Описание", 100.0, 5)
     with pytest.raises(TypeError, match="Можно складывать только объекты класса Product"):
         product + 100  # type: ignore
-
-
-def test_product_addition_with_zero_quantity() -> None:
-    """Тест класса Product на сложение продуктов с нулевым количеством"""
-    product1 = Product("Товар 1", "Описание 1", 100.0, 0)
-    product2 = Product("Товар 2", "Описание 2", 200.0, 5)
-    assert product1 + product2 == 1000.0  # 100*0 + 200*5
 
 
 def test_add_only_same_class_products() -> None:

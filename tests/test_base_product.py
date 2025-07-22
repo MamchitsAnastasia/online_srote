@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List, Optional, Any
 
 import pytest
 
@@ -17,7 +17,7 @@ class MockProduct(BaseProduct):
     def __str__(self) -> str:
         return f"{self.name}, {self._price} руб. Остаток: {self.quantity} шт."
 
-    def __add__(self, other) -> float:
+    def __add__(self, other: Any) -> float:
         if not isinstance(other, MockProduct):
             raise TypeError("Можно складывать только объекты MockProduct")
         return self._price * self.quantity + other._price * other.quantity

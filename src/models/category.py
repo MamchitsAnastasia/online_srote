@@ -28,9 +28,11 @@ class Category(BaseItem):
             description: Описание категории товаров
             products: Список товаров категории
         """
+        super().__init__()
         self.name = name
         self.description = description
-        self.__products = products
+        self._items = products
+
         # Увеличиваю счетчик категорий при создании нового объекта
         Category.category_count += 1
         # Увеличиваю счетчик уникальных товаров на количество товаров в категории
@@ -42,7 +44,7 @@ class Category(BaseItem):
         Функция для строкового представления категории в формате:
         Название категории, количество продуктов: XXX шт.
         """
-        total_quantity = sum(product.quantity for product in self.__products)
+        total_quantity = sum(product.quantity for product in self._items)
         return f"{self.name}, количество продуктов: {total_quantity} шт."
 
     def __iter__(self) -> Iterator[Product]:
@@ -61,10 +63,27 @@ class Category(BaseItem):
         if not isinstance(product, Product):
             raise TypeError("Можно добавлять только объекты класса Product или его наследников")
 
-        self.__products.append(product)
-        # Увеличиваю счетчик товаров
-        # Счётчик для товаров, добавленных через метод
-        Category.product_count += 1
+        try:
+            self.validate_quantity(product.quantity)  # Использую метод родительского класса
+            self._items.append(product)
+            # Увеличиваю счетчик товаров
+            # Счётчик для товаров, добавленных через метод
+            Category.product_count += 1
+            print("Товар успешно добавлен в категорию")
+        finally:
+            print("Обработка добавления товара в категорию завершена")
+
+    def middle_price(self) -> float:
+        """
+        Функция для подсчёта средней цены товаров в категории.
+        Возвращает 0, если в категории нет товаров.
+        """
+        try:
+            total_cost = sum(p.price * p.quantity for p in self._items)
+            total_quantity = sum(p.quantity for p in self._items)
+            return total_cost / total_quantity if total_quantity != 0 else 0.0
+        except ZeroDivisionError:
+            return 0.0
 
     @property
     def products(self) -> str:
@@ -72,14 +91,14 @@ class Category(BaseItem):
         Геттер для вывода списка товаров в заданном формате:
         Название продукта, XXX руб. Остаток: YYY шт.
         """
-        return "\n".join(str(product) for product in self.__products)
+        return "\n".join(str(product) for product in self._items)
 
     @property
     def products_list(self) -> list[Product]:
         """Геттер для получения списка продуктов (для итератора)"""
-        return self.__products
+        return self._items
 
     @property
     def total_cost(self) -> float:
         """Общая стоимость всех товаров в категории."""
-        return sum(product.price * product.quantity for product in self.__products)
+        return sum(product.price * product.quantity for product in self._items)

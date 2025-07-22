@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Optional
+from typing import Optional, Any
 
 
 class BaseProduct(ABC):
@@ -23,7 +23,7 @@ class BaseProduct(ABC):
         pass
 
     @abstractmethod
-    def __add__(self, other) -> float:
+    def __add__(self, other: Any) -> float:
         """
         Абстрактный метод для сложения продуктов.
         """

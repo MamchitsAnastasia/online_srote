@@ -83,8 +83,11 @@ def test_empty_category() -> None:
 def test_add_product_only_allowed_types(category_example: Category) -> None:
     """
     Тест класса Category,
-    проверяет, что add_product принимает только Product и его наследников
+    проверяет, что add_product принимает Product и его наследников
     """
+    initial_count = category_example.items_count  # Использую items_count из BaseItem
+    assert initial_count == 2  # Проверяю начальное состояние
+
     # Допустимые типы
     valid_products = [
         Product("Продукт", "Описание", 100, 1),
@@ -93,9 +96,9 @@ def test_add_product_only_allowed_types(category_example: Category) -> None:
     ]
 
     for product in valid_products:
-        initial_count = len(category_example.products_list)
+        current_count = category_example.items_count
         category_example.add_product(product)
-        assert len(category_example.products_list) == initial_count + 1
+        assert category_example.items_count == current_count + 1
 
 
 def test_add_product_rejects_invalid_types(category_example: Category) -> None:
@@ -106,7 +109,41 @@ def test_add_product_rejects_invalid_types(category_example: Category) -> None:
     invalid_objects = ["Не продукт", 123, {"name": "Чайник"}, None, [], True]
 
     for obj in invalid_objects:
-        initial_count = len(category_example.products_list)
+        initial_count = category_example.items_count
         with pytest.raises(TypeError, match="Можно добавлять только объекты класса Product или его наследников"):
             category_example.add_product(obj)  # type: ignore
-        assert len(category_example.products_list) == initial_count
+        assert category_example.items_count == initial_count
+
+
+def test_middle_price_with_products(category_example) -> None:
+    """
+    Тест класса Category,
+    проверяет расчет средней цены при наличии товаров
+    """
+    # category_example содержит товары за 500.3 и 1200.5
+    expected = (500.3 * 10 + 1200.5 * 5) / (10 + 5)
+    assert category_example.middle_price() == pytest.approx(expected)
+
+
+def test_middle_price_empty_category() -> None:
+    """
+    Тест класса Category,
+    проверяет возврат 0 для пустой категории
+    """
+    empty_category = Category("Пустая", "Нет товаров", [])
+    assert empty_category.middle_price() == 0.0
+
+
+def test_middle_price_zero_quantity() -> None:
+    """
+    Тест класса Category,
+    проверяет обработку товаров с quantity=0
+    """
+    p1 = Product("Товар1", "Описание", 1000, 1)
+    p2 = Product("Товар2", "Описание", 2000, 2)
+    p1.quantity -= 1  # quantity != 0 изначально - его раскупили
+    p2.quantity -= 2  # quantity != 0 изначально - его раскупили
+
+    category = Category("Тест", "Категория", [p1, p2])
+
+    assert category.middle_price() == 0.0

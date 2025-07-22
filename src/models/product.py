@@ -25,11 +25,18 @@ class Product(ReprMixin, BaseProduct):
             price: Цена товара
             quantity: Количество товара в наличии
         """
-        super().__init__(name=name, description=description, price=price, quantity=quantity)
-        self.name = name
-        self.description = description
-        self.__price = price
-        self.quantity = quantity
+        try:
+            if quantity == 0:
+                raise ValueError("Товар с нулевым количеством не может быть добавлен")
+
+            super().__init__(name=name, description=description, price=price, quantity=quantity)
+            self.name = name
+            self.description = description
+            self.__price = price
+            self.quantity = quantity
+            print("Товар успешно добавлен")
+        finally:
+            print("Обработка добавления товара завершена")
 
     def __str__(self) -> str:
         """

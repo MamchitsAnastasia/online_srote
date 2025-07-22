@@ -32,6 +32,7 @@ def category_example(product_example1: Product, product_example2: Product) -> Ca
     """Фикстура для примера категории"""
     Category.category_count = 0
     Category.product_count = 0
+
     return Category(
         "Электроника",
         "Гаджеты со странным описанием",
